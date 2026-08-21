@@ -107,7 +107,7 @@ with tab1:
         st.bar_chart(scorers.set_index("Player")["Goals"])
 
     with table_col:
-        st.dataframe(scorers, hide_index=True, width="stretch")
+        st.dataframe(scorers, hide_index=True, use_container_width=True)
 
     st.caption(
         "Mbapp\u00e9 becomes the first player to win the Golden Boot twice "
@@ -130,7 +130,7 @@ with tab2:
             ],
         }
     )
-    st.dataframe(podium, hide_index=True, width="stretch")
+    st.dataframe(podium, hide_index=True, use_container_width=True)
 
     st.caption(
         "Spain conceded only one goal in the entire tournament — a record for a champion — "

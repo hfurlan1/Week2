@@ -79,7 +79,7 @@ with tab1:
         st.bar_chart(parks.set_index("Park")["2025 Visits"])
 
     with table_col:
-        st.dataframe(parks, hide_index=True, width="stretch")
+        st.dataframe(parks, hide_index=True, use_container_width=True)
 
     st.caption(
         "Great Smoky Mountains drew more than double the visits of any other "

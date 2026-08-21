@@ -81,7 +81,7 @@ with tab1:
         st.bar_chart(medals.set_index("Nation")["Total"])
 
     with table_col:
-        st.dataframe(medals, hide_index=True, width="stretch")
+        st.dataframe(medals, hide_index=True, use_container_width=True)
 
     st.caption(
         "Norway topped the table for the fourth straight Winter Games, powered "
