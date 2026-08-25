@@ -59,6 +59,12 @@ st.bar_chart(rainfall.set_index("Month"))
 wettest = rainfall.loc[rainfall["Inches of Rain"].idxmax()]
 driest = rainfall.loc[rainfall["Inches of Rain"].idxmin()]
 st.metric(label="Wettest month", value=wettest["Month"], delta=f"{wettest['Inches of Rain']} in")
+#july_row = rainfall.loc[rainfall["Month"] == "Jul"].iloc[0]
+#st.metric(label="July Rainfall", value=f"{july_row['Inches of Rain']} in")
+
+
+july_rain = rainfall.loc[rainfall["Month"] == "Jul", "Inches of Rain"].values[0]
+st.write(f"Rainfall in July: {july_rain} inches")
 
 st.caption(
     "Source: NOAA National Centers for Environmental Information, U.S. Climate "
