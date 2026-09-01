@@ -105,6 +105,35 @@ with tab2:
             "Traveler's coverage of the same release."
         )
 
+st.divider()
+
+# ------------------------------------------------------------------------------
+# PLAN YOUR VISIT — Week 3's assignment: adding the 6 types of widgets
+# ------------------------------------------------------------------------------
+st.subheader("Plan Your Visit")
+st.caption("Try out the six basic input widgets below.")
+
+name = st.text_input("Your name", placeholder="e.g. Alex")
+
+group_size = st.number_input("Additional guests", min_value=1, max_value=20, value=2)
+
+trip_length = st.slider("Trip length (days)", min_value=1, max_value=14, value=5)
+
+favorite_park = st.selectbox(
+    "Which park do you want to visit?",
+    ["Great Smoky Mountains", "Zion", "Yellowstone", "Grand Canyon", "Yosemite"],
+)
+
+season = st.radio("Preferred season", ["Spring", "Summer", "Fall", "Winter"], horizontal=True)
+
+wants_camping = st.checkbox("Include camping in the trip")
+
+st.markdown(
+    f"**Summary:** {name or 'You'} + {group_size} people are planning a "
+    f"{trip_length}-day trip to **{favorite_park}** in **{season}**"
+    f"{', with camping' if wants_camping else ', without camping'}."
+)
+
 # ------------------------------------------------------------------------------
 # SIDEBAR — static context, stays visible on every tab
 # ------------------------------------------------------------------------------
