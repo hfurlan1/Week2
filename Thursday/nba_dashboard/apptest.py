@@ -8,9 +8,14 @@
 # This file exists to show all four layout tools working together, the way
 # Tuesday's app.py showed the four content zones working together:
 #   st.columns   — three metrics up top, then a 2:1 split for chart + table
-#   st.tabs      — Scoring Leaders / The Final Four / Season Snapshot
+#   st.tabs      — Scoring Leaders / The Final Four / Season Snapshot / Fan Zone
 #   st.sidebar   — champion, team count, Finals dates (stays put always)
 #   st.expander  — full sourcing note, tucked away until someone wants it
+#
+# Fan Zone (Tab 4) also builds in the four widget patterns: a counter that
+# persists via st.session_state, a multi-step flow using the permanent-key
+# pattern with Next/Back, a growing list that accumulates across submissions,
+# and a selectbox lookup driven by a dict's .get().
 #
 # Run it:   streamlit run apptest.py
 # ==============================================================================
@@ -85,9 +90,11 @@ with col3:
 st.divider()
 
 # ------------------------------------------------------------------------------
-# THREE TABS
+# FOUR TABS
 # ------------------------------------------------------------------------------
-tab1, tab2, tab3 = st.tabs(["Scoring Leaders", "The Final Four", "Season Snapshot"])
+tab1, tab2, tab3, tab4 = st.tabs(
+    ["Scoring Leaders", "The Final Four", "Season Snapshot", "Fan Zone"]
+)
 
 # --- Tab 1: Scoring Leaders ----------------------------------------------------
 with tab1:
@@ -157,6 +164,105 @@ with tab3:
             "cross-checked against reporting published in June 2026 following "
             "the Knicks' championship-clinching win."
         )
+
+# --- Tab 4: Fan Zone --------------------------------------------------------------
+with tab4:
+    st.subheader("Fan Zone")
+    st.caption("Four widget patterns: a counter, a multi-step flow, a growing list, and a selectbox lookup.")
+
+    # ---- Pattern 1: a counter — increments and persists across reruns -----------
+    st.markdown("#### Cheer Counter")
+
+    if "cheer_count" not in st.session_state:
+        st.session_state.cheer_count = 0
+
+    if st.button("\U0001F3C0 Cheer for the Knicks"):
+        st.session_state.cheer_count += 1
+
+    st.metric(label="Total Cheers", value=st.session_state.cheer_count)
+
+    st.divider()
+
+    # ---- Pattern 2: a multi-step flow — permanent-key pattern, Next/Back --------
+    st.markdown("#### Build Your Finals Pick")
+
+    if "bracket_step" not in st.session_state:
+        st.session_state.bracket_step = 1
+    if "east_pick" not in st.session_state:
+        st.session_state.east_pick = None
+    if "west_pick" not in st.session_state:
+        st.session_state.west_pick = None
+
+    if st.session_state.bracket_step == 1:
+        st.session_state.east_pick = st.selectbox(
+            "Step 1 of 2 — Eastern Conference favorite",
+            ["Knicks", "Cavaliers", "Celtics", "76ers"],
+            key="east_pick_widget",
+        )
+        if st.button("Next →"):
+            st.session_state.bracket_step = 2
+            st.rerun()
+
+    elif st.session_state.bracket_step == 2:
+        st.session_state.west_pick = st.selectbox(
+            "Step 2 of 2 — Western Conference favorite",
+            ["Spurs", "Thunder", "Lakers", "Timberwolves"],
+            key="west_pick_widget",
+        )
+        back_col, next_col = st.columns(2)
+        with back_col:
+            if st.button("← Back"):
+                st.session_state.bracket_step = 1
+                st.rerun()
+        with next_col:
+            if st.button("See My Pick"):
+                st.session_state.bracket_step = 3
+                st.rerun()
+
+    else:
+        st.success(
+            f"Your Finals pick: **{st.session_state.east_pick}** vs. **{st.session_state.west_pick}**"
+        )
+        if st.button("Start Over"):
+            st.session_state.bracket_step = 1
+            st.rerun()
+
+    st.divider()
+
+    # ---- Pattern 3: a growing list — accumulates across submissions -------------
+    st.markdown("#### Fan Prediction Log")
+
+    if "predictions" not in st.session_state:
+        st.session_state.predictions = []
+
+    with st.form("prediction_form", clear_on_submit=True):
+        new_prediction = st.text_input("Predict next season's champion")
+        submitted = st.form_submit_button("Add Prediction")
+        if submitted and new_prediction:
+            st.session_state.predictions.append(new_prediction)
+
+    if st.session_state.predictions:
+        for i, pred in enumerate(st.session_state.predictions, start=1):
+            st.write(f"{i}. {pred}")
+    else:
+        st.caption("No predictions submitted yet.")
+
+    st.divider()
+
+    # ---- Pattern 4: a selectbox lookup — dropdown drives a dict .get() ----------
+    st.markdown("#### Team Championship Lookup")
+
+    titles = {
+        "Boston Celtics": 18,
+        "Los Angeles Lakers": 17,
+        "Golden State Warriors": 7,
+        "Chicago Bulls": 6,
+        "San Antonio Spurs": 5,
+        "New York Knicks": 3,
+    }
+
+    team_choice = st.selectbox("Choose a team", options=list(titles.keys()))
+    st.write(f"**{team_choice}** has won **{titles.get(team_choice)}** NBA championships.")
 
 # ------------------------------------------------------------------------------
 # SIDEBAR — static context, stays visible on every tab
