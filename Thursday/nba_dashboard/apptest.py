@@ -196,7 +196,7 @@ with tab4:
     if st.session_state.bracket_step == 1:
         st.session_state.east_pick = st.selectbox(
             "Step 1 of 2 — Eastern Conference favorite",
-            ["Knicks", "Cavaliers", "Celtics", "76ers"],
+            ["Chicago Bulls", "Milwaukee Bucks", "Indiana Pacers", "Detroit Pistons", "Cleveland Cavaliers", "Charlotte Hornets", "Orlando Magic", "Atlanta Hawks", "Miami Heat", "Washington Wizards", "Toronto Raptors", "New York Knicks", "Brooklyn Nets", "Boston Celtics", "Philadelphia 76ers"],
             key="east_pick_widget",
         )
         if st.button("Next →"):
@@ -206,7 +206,7 @@ with tab4:
     elif st.session_state.bracket_step == 2:
         st.session_state.west_pick = st.selectbox(
             "Step 2 of 2 — Western Conference favorite",
-            ["Spurs", "Thunder", "Lakers", "Timberwolves"],
+            ["Denver Nuggets", "Utah Jazz", "Minnesota Timberwolves", "Oklahoma City Thunder", "Portland Trail Blazers", "LA Clippers", "Los Angeles Lakers", "Golden State Warriors", "Phoenix Suns", "Sacramento Kings", "Memphis Grizzlies", "New Orleans Pelicans", "Dallas Mavericks", "San Antonio Spurs", "Houston Rockets"],
             key="west_pick_widget",
         )
         back_col, next_col = st.columns(2)
@@ -253,12 +253,26 @@ with tab4:
     st.markdown("#### Team Championship Lookup")
 
     titles = {
-        "Boston Celtics": 18,
-        "Los Angeles Lakers": 17,
-        "Golden State Warriors": 7,
-        "Chicago Bulls": 6,
-        "San Antonio Spurs": 5,
-        "New York Knicks": 3,
+        "Boston Celtics": "18 (57, 59, 60, 61, 62, 63, 64, 65, 66, 68, 69, 74, 76, 81, 84, 86, 08, 24)",
+        "Los Angeles Lakers": "17 (49, 50, 52, 53, 54, 72, 80, 82, 85, 87, 88, 00, 01, 02, 09, 10, 20)",
+        "Golden State Warriors": "7 (47, 56, 75, 15, 17, 18, 22)",
+        "Chicago Bulls": "6 (91, 92, 93, 96, 97, 98)",
+        "San Antonio Spurs": "5 (99, 03, 05, 07, 14)",
+        "New York Knicks": "3 (70, 73, 26)",
+        "Miami Heat": "3 (06, 12, 13)",
+        "Philadelphia 76ers": "3 (55, 67, 83)",
+        "Detroit Pistons": "3 (89, 90, 04)",
+        "Houston Rockets": "2 (94, 95)",
+        "Milwaukee Bucks": "2 (71, 21)",
+        "Oklahoma City Thunder": "2 (79, 25)",
+        "Washington Wizards": "2 (48, 78)",
+        "Cleveland Cavaliers": "1 (16)",
+        "Atlanta Hawks": "1 (58)",
+        "Portland Trail Blazers": "1 (77)",
+        "Dallas Mavericks": "1 (11)",
+        "Sacramento Kings": "1 (51)",
+        "Toronto Raptors": "1 (19)",
+        "Denver Nuggets": "1 (23)"
     }
 
     team_choice = st.selectbox("Choose a team", options=list(titles.keys()))
@@ -271,7 +285,8 @@ with st.sidebar:
     st.header("About This Season")
     st.markdown(
         "**Champion:** New York Knicks\n\n"
-        "**Teams:** 30\n\n"
-        "**Finals:** June 3–13, 2026"
+        "**Eastern Conference Champions:** New York Knicks\n\n"
+        "**Western Conference Champions:** San Antonio Spurs\n\n"
+        "**Regular Season MVP:** Shai Gilgeous Alexander (Thunder)"
     )
     st.caption("This panel doesn't change no matter which tab above is open — that's what st.sidebar is for.")
